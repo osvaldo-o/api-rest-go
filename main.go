@@ -16,8 +16,6 @@ import (
 
 func main() {
 
-	router := gin.Default()
-
 	db, err := mysql_db.ConnectClient()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -44,6 +42,9 @@ func main() {
 		Name:     os.Getenv("USER"),
 		Password: os.Getenv("PASSWORD"),
 	}
+
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
 
 	router.Use(user.BasicAuthMiddleware)
 
