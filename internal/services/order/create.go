@@ -5,5 +5,5 @@ import (
 )
 
 func (s *Service) Create(order *domain.Order) (err error) {
-	return s.Repo.Update(order)
+	return s.Repo.Insert(order)
 }

@@ -17,13 +17,14 @@ func (h Handler) Create(c *gin.Context) {
 	}
 
 	order := &domain.Order{
-		Name:         orderCreateParams.Name,
-		Phone:        orderCreateParams.Phone,
-		DeliveryDate: orderCreateParams.DeliveryDate,
-		DeliveryTime: orderCreateParams.DeliveryTime,
-		Description:  orderCreateParams.Description,
-		Price:        orderCreateParams.Price,
-		Comment:      orderCreateParams.Comment,
+		Name:          orderCreateParams.Name,
+		Phone:         orderCreateParams.Phone,
+		DeliveryDate:  orderCreateParams.DeliveryDate,
+		DeliveryTime:  orderCreateParams.DeliveryTime,
+		PlaceDelivery: orderCreateParams.PlaceDelivery,
+		Description:   orderCreateParams.Description,
+		Price:         orderCreateParams.Price,
+		Comment:       orderCreateParams.Comment,
 	}
 
 	err := h.OrderService.Create(order)
