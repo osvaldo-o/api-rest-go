@@ -6,9 +6,15 @@ import (
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 func ConnectClient() (client *sql.DB, err error) {
+
+	err_os := godotenv.Load()
+	if err_os != nil {
+		fmt.Println("Error cargando el archivo .env")
+	}
 
 	dbUser := os.Getenv("DB_USER")
 	dbPassword := os.Getenv("DB_PASSWORD")
