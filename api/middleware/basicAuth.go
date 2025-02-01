@@ -3,16 +3,12 @@ package middleware
 import (
 	"encoding/base64"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-var _user = os.Getenv("USER")
-var _password = os.Getenv("PASSWORD")
-
-func BasicAuthMiddleware(c *gin.Context) {
+func (user *User) BasicAuthMiddleware(c *gin.Context) {
 
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" || !strings.HasPrefix(authHeader, "Basic ") {
@@ -37,7 +33,7 @@ func BasicAuthMiddleware(c *gin.Context) {
 	}
 
 	username, password := credentials[0], credentials[1]
-	if username == _user && password == _password {
+	if username == user.Name && password == user.Password {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Usuario o contraseña incorrectos"})
 		c.Abort()
 		return

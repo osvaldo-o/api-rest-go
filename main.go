@@ -6,9 +6,12 @@ import (
 	"flowers-mago/api/internal/repository/mysql_db"
 	orderMysql "flowers-mago/api/internal/repository/mysql_db/order"
 	orderService "flowers-mago/api/internal/services/order"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -32,7 +35,17 @@ func main() {
 		OrderService: orderSrv,
 	}
 
-	router.Use(middleware.BasicAuthMiddleware)
+	envError := godotenv.Load()
+	if envError != nil {
+		fmt.Println("Error cargando el archivo .env")
+	}
+
+	user := &middleware.User{
+		Name:     os.Getenv("USER"),
+		Password: os.Getenv("PASSWORD"),
+	}
+
+	router.Use(user.BasicAuthMiddleware)
 
 	router.GET("/orders", orderHandler.GetAllOrders)
 	router.GET("/order/:id", orderHandler.GetById)
