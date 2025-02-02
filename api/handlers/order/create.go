@@ -3,6 +3,8 @@ package order
 import (
 	"flowers-mago/api/api/core"
 	"flowers-mago/api/internal/domain"
+	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,7 +14,11 @@ func (h Handler) Create(c *gin.Context) {
 	var orderCreateParams core.OrderCreateParams
 
 	if err := c.ShouldBindJSON(&orderCreateParams); err != nil {
-		c.JSON(400, err)
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
 		return
 	}
 
@@ -29,10 +35,17 @@ func (h Handler) Create(c *gin.Context) {
 
 	err := h.OrderService.Create(order)
 	if err != nil {
-		c.JSON(400, err)
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
 		return
 	}
 
-	c.JSON(200, "Success")
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   "Pedido creado",
+	})
 
 }

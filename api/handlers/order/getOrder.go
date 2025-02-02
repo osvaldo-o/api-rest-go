@@ -1,6 +1,7 @@
 package order
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -11,22 +12,37 @@ func (h *Handler) GetById(c *gin.Context) {
 
 	idParam := c.Param("id")
 	if idParam == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID requerido"})
+		log.Println("error: es necesario el ID")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   nil,
+		})
 		return
 	}
 
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "ID inválido"})
+		log.Println("error: id invalido")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   nil,
+		})
 		return
 	}
 
 	order, err := h.OrderService.GetById(&id)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		log.Println("error: ", err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   nil,
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, order)
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   order,
+	})
 
 }

@@ -1,15 +1,27 @@
 package order
 
-import "github.com/gin-gonic/gin"
+import (
+	"log"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func (h Handler) GetAllOrders(c *gin.Context) {
 
 	orders, err := h.OrderService.Get()
 	if err != nil {
-		c.JSON(400, err)
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   nil,
+		})
 		return
 	}
 
-	c.JSON(200, orders)
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   orders,
+	})
 
 }

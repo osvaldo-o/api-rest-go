@@ -1,6 +1,7 @@
 package order
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,13 +9,28 @@ import (
 
 func (h *Handler) Delete(c *gin.Context) {
 
-	id := c.Param("id")
-
-	err := h.OrderService.Delete(&id)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al eliminar la orden"})
+	idParam := c.Param("id")
+	if idParam == "" {
+		log.Println("error: es necesario el ID")
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Orden eliminada correctamente"})
+	err := h.OrderService.Delete(&idParam)
+	if err != nil {
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   "Pedido eliminada correctamente",
+	})
 }

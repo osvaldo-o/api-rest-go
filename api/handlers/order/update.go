@@ -2,6 +2,7 @@ package order
 
 import (
 	"flowers-mago/api/internal/domain"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -13,21 +14,37 @@ func (h *Handler) UpdateOrder(c *gin.Context) {
 	idParam := c.Param("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "id invalido"})
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
+		return
 	}
 
 	var order domain.Order
 	order.ID = id
 	if err := c.ShouldBindJSON(&order); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos"})
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
 		return
 	}
 
 	if err := h.OrderService.Update(&order); err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Pedido no encontrado"})
+		log.Println("error: ", err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"status": http.StatusBadRequest,
+			"data":   "error",
+		})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Pedido actualizado correctamente"})
+	c.JSON(http.StatusOK, gin.H{
+		"status": http.StatusOK,
+		"data":   "Pedido actualizado correctamente",
+	})
 
 }

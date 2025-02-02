@@ -45,6 +45,7 @@ func main() {
 	router.PUT("/order/:id", orderHandler.UpdateOrder)
 	router.DELETE("/order/:id", orderHandler.Delete)
 
+	log.Println("Run server")
 	router.Run()
 
 }
