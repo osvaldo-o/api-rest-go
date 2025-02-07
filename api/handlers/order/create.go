@@ -33,7 +33,7 @@ func (h Handler) Create(c *gin.Context) {
 		Comment:       orderCreateParams.Comment,
 	}
 
-	err := h.OrderService.Create(order)
+	order, err := h.OrderService.Create(order)
 	if err != nil {
 		log.Println("error: ", err)
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -45,7 +45,7 @@ func (h Handler) Create(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": http.StatusOK,
-		"data":   "Pedido creado",
+		"data":   order,
 	})
 
 }

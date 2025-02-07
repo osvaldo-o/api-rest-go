@@ -2,14 +2,16 @@ package order
 
 import "flowers-mago/api/internal/domain"
 
-func (r *Repository) Insert(order *domain.Order) error {
+func (r *Repository) Insert(order *domain.Order) (*domain.Order, error) {
 
 	query := `
 		INSERT INTO orders (status, name, phone, delivery_date, delivery_time, place_delivery, description, price, comment)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+		RETURNING id
 	`
 
-	_, err := r.DB.Exec(
+	var orderID int
+	err := r.DB.QueryRow(
 		query,
 		order.Status,
 		order.Name,
@@ -20,12 +22,13 @@ func (r *Repository) Insert(order *domain.Order) error {
 		order.Description,
 		order.Price,
 		order.Comment,
-	)
+	).Scan(&orderID)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	order.ID = orderID
+	return order, nil
 
 }
