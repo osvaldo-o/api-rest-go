@@ -3,11 +3,11 @@ CREATE TABLE orders (
     status BOOLEAN NOT NULL,                        -- Representa el estado como verdadero/falso.
     name VARCHAR(255) NOT NULL,                     -- Nombre del cliente.
     phone VARCHAR(20) NOT NULL,                     -- Número de teléfono.
-    delivery_date DATE NOT NULL,                    -- Fecha de entrega.
-    delivery_time TIME NOT NULL,                    -- Hora de entrega.
+    delivery_date VARCHAR(50) NOT NULL,                    -- Fecha de entrega.
+    delivery_time VARCHAR(50) NOT NULL,                    -- Hora de entrega.
     place_delivery VARCHAR(255) NOT NULL,           -- Lugar de entrega.
     description TEXT,                               -- Descripción del pedido (puede ser NULL).
-    price DECIMAL(10, 2) NOT NULL,                  -- Precio, formato numérico con 2 decimales.
+    price VARCHAR(20) NOT NULL,                  -- Precio, formato numérico con 2 decimales.
     comment TEXT                                    -- Comentarios adicionales (puede ser NULL).
 );
 

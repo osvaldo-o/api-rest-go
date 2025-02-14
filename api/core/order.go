@@ -10,3 +10,7 @@ type OrderCreateParams struct {
 	Price         string `json:"price"`
 	Comment       string `json:"comment"`
 }
+
+type SetStatusBody struct {
+	Status bool `json:"status"`
+}

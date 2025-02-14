@@ -8,6 +8,7 @@ type OrderService interface {
 	Create(newOrder *domain.Order) (*domain.Order, error)
 	Update(order *domain.Order) error
 	Delete(id *string) error
+	SetStatus(status *bool, id *int) error
 }
 
 type OrderRepository interface {
@@ -16,4 +17,5 @@ type OrderRepository interface {
 	Insert(order *domain.Order) (*domain.Order, error)
 	Update(order *domain.Order) error
 	Delete(id *string) error
+	SetStatus(status *bool, id *int) error
 }
